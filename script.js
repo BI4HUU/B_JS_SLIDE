@@ -65,5 +65,5 @@ function fS3() {
 	
 };
 function fS4() {
-	if (true) {alert(8)} else {}
+	if (true) {alert(888)} else {}
 };
