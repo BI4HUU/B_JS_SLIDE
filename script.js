@@ -17,9 +17,12 @@ let s2 = Id(`slide${numberBeakSlide}`);
 for (let i = 0; i < quantityLength; i++) {
 	quantity[i].id = `slide${i+1}`;
 	let input = CE('input');
-		input.className = "inputSlide";
+		input.classList.add("inputSlide", "inputSlideN");
 		input.type="button";
-		input.value=`${i+1}`;
+		input.style.background = `url("${i+1}.jpg") `;
+		input.style.backgroundSize = `100% 100%`;
+		// input.value=`${i+1}`;
+		// input.value=node.cloneNode(deep);
 		input.setAttribute('onclick', `fS1(${i+1})`);
 	Id('wIN').appendChild(input);
 };
@@ -29,8 +32,8 @@ console.log(quantityButton);
 
 function avtoHover(namber){
 	for (let i = 0; i < quantityLength; i++) {
-		quantityButton[i].style.border = '0';	}
-	quantityButton[namber].style.border = '3px rgba(88, 88, 88, 0.8) solid';};
+		quantityButton[i].style.boxShadow = 'inset 0 0 2em rgba(0, 0, 0, 0.3)';	}
+	quantityButton[namber].style.boxShadow = `inset 0 0 1em rgba(256, 256, 256, 0.3),  0em 0em 2em rgba(0, 0, 0, 1)`;};
 	avtoHover(numberBeakSlide-1);
 let setI = setInterval(() => {nextAuto();}, time);
 function beforeGo(e) {
