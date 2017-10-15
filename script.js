@@ -1,4 +1,3 @@
-// добавить автоховер на кнопки
 
 let time = 8000; // Пауза між кадрами (мілісек)
 let speed = 1;  // скорость листання (сек)
@@ -6,10 +5,13 @@ function Id(e) {return document.getElementById(e)};
 function CE(e) {return document.createElement(e)};
 let WrapFullScreen = Id("WrapFullScreen");
 let quantity = document.getElementsByClassName('wrapperSpanSlide')[0].childNodes;
+let quantityButton = Id('wIN').childNodes;
 let quantityLength = quantity.length-1; // Кількість слайдів
-let numberNextSlide = quantityLength;  // Номер наступного слайда
-let numberBeakSlide = quantityLength-1; // Номер основного слайда
-let zI = 1;                 // z-index
+// let numberNextSlide = quantityLength;  // Номер наступного слайда
+// let numberNextSlide = quantityLength;  // Номер наступного слайда
+let numberNextSlide = 1;  // Номер наступного слайда
+let numberBeakSlide = 1; // Номер основного слайда
+let zI = 8;                 // z-index
 let s1 = Id(`slide${numberNextSlide}`);
 let s2 = Id(`slide${numberBeakSlide}`); 
 for (let i = 0; i < quantityLength; i++) {
@@ -19,11 +21,22 @@ for (let i = 0; i < quantityLength; i++) {
 		input.type="button";
 		input.value=`${i+1}`;
 		input.setAttribute('onclick', `fS1(${i+1})`);
-	Id('wIN').appendChild(input);	};
+	Id('wIN').appendChild(input);
+};
+quantity[0].style.zIndex = zI-1;
+console.log(quantityLength);
+console.log(quantityButton);
+
+function avtoHover(namber){
+	for (let i = 0; i < quantityLength; i++) {
+		quantityButton[i].style.border = '0';	}
+	quantityButton[namber].style.border = '3px rgba(88, 88, 88, 0.8) solid';};
+	avtoHover(numberBeakSlide-1);
 let setI = setInterval(() => {nextAuto();}, time);
 function beforeGo(e) {
 	s1 = Id(`slide${numberNextSlide}`);
-	if (s2 == null) {s2 = Id(`slide${quantityLength}`)};
+	avtoHover(numberNextSlide-1);
+	if (s2 == null) {s2 = Id(`slide${1}`)};
 	s1.style.cssText=`transition: 'left 0s';left: ${e}100%;`;
 	s1.style.zIndex = `${zI}`;
 	s2.style.cssText=`transition: 'left 0s';left: 0%;`;
@@ -71,7 +84,6 @@ function fS1(nNSU) {
 		};
         };
     };
-    pau
 function clearIntervalMini() {
 	clearInterval(setI);
 	setI = setInterval(() => {
@@ -82,23 +94,20 @@ function pause() {
 	clearInterval(setI);
 }
 function toggleFullScreen() {
-	if (WrapFullScreen.mozRequestFullScreen) {
 	WrapFullScreen.mozRequestFullScreen();
 		if (WrapFullScreen.mozRequestFullScreen()) {} else {document.mozCancelFullScreen()}
-	}; // else document.exitFullscreen();
-	if (WrapFullScreen.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT)) {
 	WrapFullScreen.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-} else {document.webkitCancelFullScreen()}};
-WrapFullScreen.addEventListener('keydown', function(event) {
-    console.log(event.keyCode);
+		if (WrapFullScreen.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT)) {} else {document.webkitCancelFullScreen()}
+};
+document.addEventListener('keydown', function(event) {
     if (event.keyCode==39) {nextAuto()};
     if (event.keyCode==37) {fS1()};
     if (event.keyCode==38) {toggleFullScreen()};
     if (event.keyCode==40) {toggleFullScreen()};
     if (event.keyCode==32) {pause()};
         }, false);
-function алерт(аргум) {
-	alert(аргум)
-}
-let v = () => алерт(8);
 
+// let test = document.createElement('style');
+// test.innerHTML = '.fullScreenButton{background: rgba(256, 88, 88, 0.9)}';
+
+// WrapFullScreen.appendChild(test);
