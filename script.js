@@ -13,14 +13,15 @@ for (let i = 0; i < allSlidesLength; i++) {
 	// allSlides[i].className = `slide slide${i+1}`;
 	allSlides[i].classList.add(`slide${i+1}`);
 	allSlides[i].classList.add(`slide`);
-	let buttonNamber = document.createElement(`div`);
-		buttonNamber.classList.add(`buttonNamber`);
-		buttonNamber.style.background = `url("${i+1}.jpg") `;
-		// buttonNamber.style.backgroundSize = `100% 100%`;
-		buttonNamber.setAttribute(`onclick`, `verification(${i+1})`);
-    document.getElementsByClassName(`wrapButtonNamber`)[0].appendChild(buttonNamber);
+	let buttonNumber = document.createElement(`div`);
+		buttonNumber.classList.add(`buttonNumber`);
+		buttonNumber.style.background = `url("${i+1}.jpg") `;
+		buttonNumber.style.backgroundSize = `100% 100%`;
+		buttonNumber.setAttribute(`onclick`, `verification(${i+1})`);
+    document.getElementsByClassName(`wrapButtonNumber`)[0].appendChild(buttonNumber);
     // Закоменtить в PUG
 };
+let allButtonNumber = document.getElementsByClassName('wrapButtonNumber')[0].childNodes;
 let virtualSlideNext = document.getElementsByClassName(`slide${numberNextSlide}`)[0];
 let virtualSlideBack = document.getElementsByClassName(`slide${numberBackSlide}`)[0]; 
 
@@ -89,10 +90,11 @@ function pause() {
 
 function autoHover(namber){
 	for (let i = 0; i < allSlidesLength; i++) {
-        allSlides[i].style.border = '2px rgba(222, 0, 0, 0.9) solid';	
-        allSlides[i].style.boxShadow = 'inset 0 0 2em rgba(222, 0, 0, 0.9)';	
+        allButtonNumber[i].style.border = '3px rgba(0, 0, 0, 0.6) solid';	
+        allButtonNumber[i].style.boxShadow = 'inset 0 0 2em rgba(0, 0, 0, 0.5)';	
     };
-    allSlides[namber].style.boxShadow = `inset 0 0 1em rgba(256, 256, 256, 0.3),  0em 0em 2em rgba(0, 0, 0, 1)`;
+    allButtonNumber[namber].style.border = '3px rgba(222, 222, 222, 0.6) solid';	
+	allButtonNumber[namber].style.boxShadow = `inset 0 0 2em rgba(256, 256, 256, 0.2),  0em 0em 2em rgba(0, 0, 0, 1)`;
 };
 autoHover(numberBackSlide-1);
 
@@ -103,8 +105,8 @@ function fullScreen() {
 		if (slider.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT)) {} else {document.webkitCancelFullScreen()}
 };
 document.addEventListener('keydown', function(event) {
-    if (event.keyCode==39) {nextAuto()};
-    if (event.keyCode==37) {fS1()};
+    if (event.keyCode==39) {next()};
+	if (event.keyCode==37) {verification()};
     if (event.keyCode==38) {fullScreen()};
     if (event.keyCode==40) {fullScreen()};
     if (event.keyCode==32) {pause()};
