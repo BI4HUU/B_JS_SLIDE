@@ -1,102 +1,116 @@
-let time = 8000; // Пауза між кадрами (мілісек)
-let speed = 4;  // скорость листання (сек)
-let slider = document.getElementsByClassName('Slider')[0];
-let allSlides = document.getElementsByClassName('Slider')[0].childNodes;
-let allSlidesLength = allSlides.length-1; // Кількість слайдів
-let numberNextSlide = 1;  // Номер наступного слайда
-let numberBackSlide = 1; // Номер основного? слайда // 2
-let zIndex = 8; 
-let setI = setInterval(() => {next();}, time);
+let time = 30000;
+let speed = 5;
+let slider = document.getElementsByClassName(`Slider`)[0];
+let allSlides = slider.childNodes;
+let allSlidesLength = allSlides.length-1;
+let numberNextSlide = 1;
+let numberBackSlide = 1;
+let zIndex = 8;
+let setI = setInterval( () => next(), time );
 allSlides[0].style.zIndex = zIndex-1;
 
-for (let i = 0; i < allSlidesLength; i++) {
-	// allSlides[i].className = `slide slide${i+1}`;
-	allSlides[i].classList.add(`slide${i+1}`);
+for ( let i = 0; i < allSlidesLength; i++ ) {
 	allSlides[i].classList.add(`slide`);
+	allSlides[i].classList.add(`slide${i+1}`);
 	let buttonNumber = document.createElement(`div`);
 		buttonNumber.classList.add(`buttonNumber`);
-		buttonNumber.style.background = `url("${i+1}.jpg") `;
+		buttonNumber.style.background = `url('${i+1}.jpg')`;
 		buttonNumber.style.backgroundSize = `100% 100%`;
-		buttonNumber.setAttribute(`onclick`, `verification(${i+1})`);
-    document.getElementsByClassName(`wrapButtonNumber`)[0].appendChild(buttonNumber);
-    // Закоменtить в PUG
-};
-let allButtonNumber = document.getElementsByClassName('wrapButtonNumber')[0].childNodes;
-let virtualSlideNext = document.getElementsByClassName(`slide${numberNextSlide}`)[0];
-let virtualSlideBack = document.getElementsByClassName(`slide${numberBackSlide}`)[0]; 
+		buttonNumber.setAttribute( `onclick`, `verification(${i+1})` );
+	document.getElementsByClassName( `wrapButtonNumber` )[0].appendChild(buttonNumber);
+}
+let allButtonNumber = document.getElementsByClassName( `wrapButtonNumber` )[0].childNodes;
+let virtualSlideNext = document.getElementsByClassName( `slide${numberNextSlide}` )[0];
+let virtualSlideBack = document.getElementsByClassName( `slide${numberBackSlide}` )[0];
 
-function verification(nNSU) {
-	if (numberNextSlide == nNSU) {	
-		clearIntervalMini();	
-	} else { 
-		if (numberNextSlide < nNSU) {
-			next(nNSU); 
+function verification(number) {
+	if (numberNextSlide == number) {
+		clearIntervalMini();		
+	} else {
+		if ( numberNextSlide < number ) {
+			next( number );
 			clearIntervalMini();
 		} else {
 			clearIntervalMini();
-			if (nNSU == undefined) {
+			if ( number == undefined ) {
 				numberNextSlide--;
-				if (numberNextSlide==0) {numberNextSlide=allSlidesLength};
+				if (numberNextSlide == 0) {
+					numberNextSlide = allSlidesLength;
+				};
 			} else {
-				numberNextSlide = nNSU;
-				if (numberNextSlide==0) {numberNextSlide=allSlidesLength};
-			};	
-			virtualSlideBack = virtualSlideNext;
-			beforeGo('-');
+				numberNextSlide = number;
+			};
+		virtualSlideBack = virtualSlideNext;
+		GO( `-` );
 		};
-    };
+	};
 };
 
-function next(nNSU) {
+function next(number) {
 	clearIntervalMini();
-	if (nNSU) {
-		numberNextSlide=nNSU;
+	if (number) {
+		numberNextSlide = number;
 		virtualSlideBack = virtualSlideNext;
 	} else {
+		numberBackSlide = numberNextSlide;
 		numberNextSlide++;
-		numberBackSlide = numberNextSlide-1;
-		if (numberBackSlide == 0) {numberBackSlide = allSlidesLength};
-		if (numberNextSlide > allSlidesLength){numberNextSlide = 1};
-		virtualSlideBack = document.getElementsByClassName(`slide${numberBackSlide}`)[0]; 
+		if (numberNextSlide > allSlidesLength) {
+			numberNextSlide = 1;
+		};
+		virtualSlideBack = document.getElementsByClassName( `slide${numberBackSlide}` )[0];
 	};
-    beforeGo(''); }; 
-
-function beforeGo(e) {
-	virtualSlideNext = document.getElementsByClassName(`slide${numberNextSlide}`)[0];
-	autoHover(numberNextSlide-1);
-	if (virtualSlideBack == null) {virtualSlideBack = document.getElementsByClassName(`slide${1}`)[0]};
-	virtualSlideNext.style.cssText=`transition: left 0s;left: ${e}100%;z-index: ${zIndex}`;
-    virtualSlideBack.style.cssText=`transition: left 0s;left: 0%;z-index: ${zIndex}`;
-	zIndex++;
-	setTimeout(() => {
-		virtualSlideNext.style.transition = `left ${speed}s cubic-bezier(.35,.47,.93,.92)`;
-        virtualSlideNext.style.left = "0%";
-		virtualSlideBack.style.transition = `left ${speed}s cubic-bezier(.35,.47,.93,.92)`;
-        if (e == '') {virtualSlideBack.style.left = '-100%';} else {virtualSlideBack.style.left = '100%';};
-    }, 88);
+	GO(``);
 };
 
+function GO(e) {
+	virtualSlideNext = document.getElementsByClassName(`slide${numberNextSlide}`)[0];
+	autoHover(numberNextSlide-1);
+	if(virtualSlideBack == null) {
+		virtualSlideBack = document.getElementsByClassName(`slide${1}`)[0];};
+		virtualSlideNext.style.cssText = `transition: left 0s; left: ${e}100%;z-index: ${zIndex};`;
+		virtualSlideBack.style.cssText = `transition: left 0s; left: 0%;z-index: ${zIndex};`;
+		zIndex++;
+		setTimeout(
+			() => {
+				virtualSlideNext.style.transition = `left ${speed}s cubic-bezier(.35,.47,.93,.92)`;
+				virtualSlideNext.style.left = `0%`;
+				virtualSlideBack.style.transition = `left ${speed}s cubic-bezier(.35,.47,.93,.92)`;
+				if(e == ``) {
+				virtualSlideBack.style.left = `-100%`;
+				} else {
+				virtualSlideBack.style.left = `100%`;
+				};
+		}, 88);
+};
 
 function clearIntervalMini() {
 	clearInterval(setI);
-	setI = setInterval(() => {
-		next();
-	}, time);
-    setI;	
+	setI = setInterval(
+		() => {
+			next();
+		}, time	); 
 };
+
 function pause() {
 	clearInterval(setI);
-}
-
-function autoHover(namber){
-	for (let i = 0; i < allSlidesLength; i++) {
-        allButtonNumber[i].style.border = '3px rgba(0, 0, 0, 0.6) solid';	
-        allButtonNumber[i].style.boxShadow = 'inset 0 0 2em rgba(0, 0, 0, 0.5)';	
-    };
-    allButtonNumber[namber].style.border = '3px rgba(222, 222, 222, 0.6) solid';	
-	allButtonNumber[namber].style.boxShadow = `inset 0 0 2em rgba(256, 256, 256, 0.2),  0em 0em 2em rgba(0, 0, 0, 1)`;
+};
+function autoHover(number) {
+	for ( let i = 0; i < allSlidesLength; i++ ) {
+		allButtonNumber[i].style.border = `3px rgba(0, 0, 0, 0.6) solid`;
+		allButtonNumber[i].style.boxShadow = `inset 0 0 2em rgba(0, 0, 0, 0.4)`;
+	};
+	allButtonNumber[number].style.border = `3px rgba(222, 222, 222, 0.6) solid`;
+	allButtonNumber[number].style.boxShadow = `inset 0 0 2em rgba(222, 222, 222, 0.2), 0 0 2em rgba(0, 0, 0, 1)`;
 };
 autoHover(numberBackSlide-1);
+
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode==39) {next()};
+    if (event.keyCode==37) {verification()};
+    if (event.keyCode==38) {fullScreen()};
+    if (event.keyCode==40) {fullScreen()};
+    if (event.keyCode==32) {pause()};
+        }, false);
 
 function fullScreen() {
 	slider.mozRequestFullScreen();
@@ -104,10 +118,3 @@ function fullScreen() {
 	slider.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
 		if (slider.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT)) {} else {document.webkitCancelFullScreen()}
 };
-document.addEventListener('keydown', function(event) {
-    if (event.keyCode==39) {next()};
-	if (event.keyCode==37) {verification()};
-    if (event.keyCode==38) {fullScreen()};
-    if (event.keyCode==40) {fullScreen()};
-    if (event.keyCode==32) {pause()};
-        }, false);
