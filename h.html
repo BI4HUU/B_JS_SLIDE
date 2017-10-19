@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+	<body>
+	<ul>
+		<li onclick="_super(`b_header`, `1`)"">Text_Header4</li>
+		<li onclick="_super(`b_sidebar`, `2`)">Text_Sidebar4</li>
+		<!-- <li onclick="tooS(`3`)">Text_Footer3</li> -->
+		<li onclick="_super(`b_footer`, `3`)">Text_Footer3</li>
+		<li id="Content"></li>
+	</ul>
+	<style>div{font-size: 88px;}</style>
+
+<script>
+const socket = new WebSocket("ws://localhost:9999");
+
+
+function tooS(sms) {
+  socket.send(sms);
+};
+socket.onmessage = function(event) {
+	console.log(event.data);
+	eval(`${event.data}`);
+};
+
+let c = Id('Content');
+function _super(arg1, arg2) {
+	if (!Id(`${arg1}`)) {
+		return none(`${arg1}`, `${arg2}`);
+	} else {
+		return none(`${arg1}`);
+	};
+};
+function none(arg, arg2) {
+	allC = c.childNodes;
+
+	for (let i = 0; i < allC.length; i++) {
+		if (allC[i]) {allC[i].style.display = "none";}
+	};
+	if (arg2) {tooS(arg2);};
+	if (Id(arg)) {Id(arg).style.display = "block";};
+};
+
+function Id(arg) {
+	return document.getElementById(`${arg}`)
+};
+
+function add(data) {
+	for (let i = 0; i < data.length; i++) {
+	let buttonNumber = document.createElement(`div`);
+		buttonNumber.style.background = `#ccc`;
+		console.log(data[i]);
+		buttonNumber.innerHTML = `${data[i]}`;
+	c.appendChild(buttonNumber);
+	}
+};
+</script>
