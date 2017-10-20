@@ -1,1 +1,72 @@
-<html lang="en"><head><meta charset="UTF-8"/><title>Slider</title></head><body><div class="Slider"><div><img src="1.jpg" alt=""/></div><div><img src="2.jpg" alt=""/></div><div><img src="3.jpg" alt=""/></div><div class="Panel"><div class="bigButton buttonFullScreen" onclick="fullScreen()">< ></div><div class="bigButton buttonLeft" onclick="verification()"><</div><div class="bigButton buttonPause" onclick="pause()">| |</div><div class="bigButton buttonRight" onclick="next()">></div><div class="wrapButtonNumber"></div></div></div><link href="style.css" rel="stylesheet"/><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+	<body style="font-size: 88px;">
+	<div class="wrapSec1Head">
+		<label for="i1">
+			<div class="labelClass" onclick="_super(`b1`, `1`)"">Головна</div>
+		</label>
+		<input type="radio" name="tabs" id="i1" checked="checked"></input>
+		<div id="Contentb1" class="sec1Sub"></div>
+	
+		<label for="i2">
+			<div class="labelClass" onclick="_super(`b2`, `2`)">Друзі</div>
+		</label>
+		<input type="radio" name="tabs" id="i2" ></input>
+		<div id="Contentb2" class="sec1Sub"></div>
+
+		<label for="i3">
+			<div class="labelClass" onclick="_super(`b3`, `3`)">Повідомлення</div>
+		</label>
+		<input type="radio" name="tabs" id="i3" ></input>
+		<div id="Contentb3" class="sec1Sub"></div>
+	</div>
+<style type="text/css">
+	* {padding: 0;margin: 0;}
+.wrapSec1Head {
+  display: flex;
+  position: relative; }
+  .wrapSec1Head input {
+    display: none; }
+    .wrapSec1Head input:checked + .sec1Sub {
+      display: flex; }
+  .wrapSec1Head label {
+    width: 100%;
+    background: #d6dee1; }
+    .wrapSec1Head label:hover {
+      background: #2196f3; }
+.sec1Sub {
+  display: none;
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100%);
+  width: 100%; }
+	 
+</style>
+<script>
+
+	const socket = new WebSocket("ws://localhost:9999");
+
+	function tooS(sms) {  socket.send(sms); };
+
+	socket.onmessage = event => eval(`${event.data}`);	// console.log(event.data);
+
+	function _super(arg1, arg2) {
+		if (!Id(`${arg1}`)) {	tooS(arg2);	} 
+	};
+
+	function add(data) {
+		// for (let i = 0; i < data.length; i++) {
+		let createBlock = document.createElement(`div`);
+			createBlock.innerHTML = `${data[1]}`;
+			createBlock.id = `${data[0]}`;
+		 Id(`Content${data[0]}`).appendChild(createBlock);
+		// }
+	};
+	function Id(arg) {
+		return document.getElementById(`${arg}`)
+	};
+</script>
+		<!-- console.log(data[i]); -->
