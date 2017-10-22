@@ -4,7 +4,7 @@
 	<body style="font-size: 88px;">
 	<div class="wrapSec1Head">
 		<label for="i1">
-			<div class="labelClass" onclick="_super(`b1`, `1`)"">Головна</div>
+			<div class="labelClass" onclick="_super('b1', '1')"">Головна</div>
 		</label>
 		<input type="radio" name="tabs" id="i1" checked="checked"></input>
 		<div id="Contentb1" class="sec1Sub"></div>
@@ -22,14 +22,14 @@
 		<div id="Contentb3" class="sec1Sub"></div>
 	</div>
 <style type="text/css">
-	* {padding: 0;margin: 0;}
+	body {padding: 0;margin: 0;}
 .wrapSec1Head {
   display: flex;
   position: relative; }
   .wrapSec1Head input {
     display: none; }
     .wrapSec1Head input:checked + .sec1Sub {
-      display: flex; }
+      display: block; }
   .wrapSec1Head label {
     width: 100%;
     background: #d6dee1; }
@@ -46,27 +46,41 @@
 	 
 </style>
 <script>
+let socket = true;
 
-	const socket = new WebSocket("ws://localhost:9999");
+//	console.log(event.data)
+	socket.onmessage = true;
+socket = new WebSocket("wss://b-seti-bi4huu.c9users.io");
+	socket.onmessage = event => {
+		// eval(`${event.data}`)}
+		eval(event.data)}
 
-	function tooS(sms) {  socket.send(sms); };
+// setTimeout(	() => {		socket = new WebSocket("wss://b-seti-bi4huu.c9users.io");
+// //	setInterval(() => {		socket.send('sms1')}, 4000);
+// 	socket.onmessage = event => {eval(`${event.data}`)}
+// }, 13000);
 
-	socket.onmessage = event => eval(`${event.data}`);	// console.log(event.data);
+function tooS(sms) {socket.send(sms) };
+
+
 
 	function _super(arg1, arg2) {
 		if (!Id(`${arg1}`)) {	tooS(arg2);	} 
 	};
 
 	function add(data) {
-		// for (let i = 0; i < data.length; i++) {
+
+	// console.log(data[1])
+	// console.log(data[1][0])
+		 for (let i = 0; i < data[1].length; i++) {
 		let createBlock = document.createElement(`div`);
-			createBlock.innerHTML = `${data[1]}`;
-			createBlock.id = `${data[0]}`;
-		 Id(`Content${data[0]}`).appendChild(createBlock);
-		// }
+			createBlock.innerHTML = `${data[1][i][1]} ${data[1][i][2]}`;
+			createBlock.id = `${data[1][i][0]}`;
+		 Id(`Contentb2`).appendChild(createBlock);
+		 }
 	};
 	function Id(arg) {
 		return document.getElementById(`${arg}`)
 	};
+	
 </script>
-		<!-- console.log(data[i]); -->
